@@ -1,12 +1,12 @@
 import React from "react";
 import MessageItem from "./MessageItem";
 import MessageForm from "./MessageForm";
-import { Comment, Header } from "semantic-ui-react";
+import { Comment, Header, Divider } from "semantic-ui-react";
 
 class MessageContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { messages: [], currentOnline: 1 };
+    this.state = { messages: [], currentOnline: props.currentOnline };
 
     this.socket = this.props.socket;
 
@@ -18,47 +18,59 @@ class MessageContainer extends React.Component {
       messages: [
         ...this.state.messages,
         {
-          name: "Admin",
+          username: "Admin",
           text: `${this.props.currentUsername} (you) connected!`,
           date: Date.now(),
         },
       ],
     });
 
-    this.socket.on("chat-message", (data) => {
+    this.socket.on("new-message", (data) => {
       this.setState({
         messages: [...this.state.messages, data],
       });
     });
 
-    this.socket.on("user-connected", (name) => {
+    this.socket.on("user-connected", (data) => {
       this.setState({
         messages: [
           ...this.state.messages,
-          { name: "Admin", text: `${name} connected!`, date: Date.now() },
+          {
+            username: "Admin",
+            text: `${data.username} connected!`,
+            date: Date.now(),
+          },
         ],
+        currentOnline: data.currentOnline,
       });
     });
 
-    this.socket.on("user-disconnected", (name) => {
+    this.socket.on("user-disconnected", (data) => {
       this.setState({
         messages: [
           ...this.state.messages,
-          { name: "Admin", text: `${name} disconnected!`, date: Date.now() },
+          {
+            username: "Admin",
+            text: `${data.username} disconnected!`,
+            date: Date.now(),
+          },
         ],
+        currentOnline: data.currentOnline,
       });
     });
-
-    this.socket.on("current-online", (value) => {
-      console.log(value)
-      this.setState({ currentOnline: value })
-    })
   }
 
   onMessageFormSubmit(message) {
-    this.socket.emit("send-chat-message", message);
+    this.socket.emit("new-message", message);
     this.setState({
-      messages: [...this.state.messages, message],
+      messages: [
+        ...this.state.messages,
+        {
+          username: this.props.currentUsername,
+          text: message,
+          date: Date.now(),
+        },
+      ],
     });
   }
 
@@ -66,11 +78,12 @@ class MessageContainer extends React.Component {
     return (
       <Comment.Group>
         <Header as="h3" dividing>
-          Messenger: {this.state.currentOnline}
+          Current Online: {this.state.currentOnline}
         </Header>
         {this.state.messages.map((message, index) => (
           <MessageItem key={index} message={message} />
         ))}
+        <Divider />
         <MessageForm
           currentUsername={this.props.currentUsername}
           onSubmit={this.onMessageFormSubmit}

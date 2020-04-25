@@ -12,6 +12,7 @@ class App extends Component {
     this.state = {
       currentScreen: "LoginScreen",
       currentUsername: "",
+      currentOnline: 0,
     };
 
     this.onUsernameSubmitted = this.onUsernameSubmitted.bind(this);
@@ -19,9 +20,13 @@ class App extends Component {
 
   onUsernameSubmitted(username) {
     this.socket.emit("new-user", username);
-    this.setState({
-      currentUsername: username,
-      currentScreen: "ChatScreen",
+
+    this.socket.on("login", (data) => {
+      this.setState({
+        currentOnline: data.currentOnline,
+        currentUsername: username,
+        currentScreen: "ChatScreen",
+      });
     });
   }
 
@@ -36,6 +41,7 @@ class App extends Component {
       return (
         <Segment stacked textAlign="left">
           <MessageContainer
+            currentOnline={this.state.currentOnline}
             currentUsername={this.state.currentUsername}
             socket={this.socket}
           />

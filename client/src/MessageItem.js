@@ -9,7 +9,7 @@ const MessageItem = (props) => {
         <img src={faker.image.avatar()} alt={props.message.name} />
       </div> */}
       <Comment.Content>
-        <Comment.Author as="span">{props.message.name}</Comment.Author>
+        <Comment.Author as="span">{props.message.username}</Comment.Author>
         <Comment.Metadata>
           <span className="date">{moment(props.message.date).calendar()}</span>
         </Comment.Metadata>

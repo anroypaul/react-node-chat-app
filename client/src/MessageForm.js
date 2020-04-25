@@ -25,11 +25,7 @@ class MessageForm extends React.Component {
 
   onSubmit(event) {
     event.preventDefault();
-    let message = {
-      name: `${this.props.currentUsername}`,
-      text: this.state.message,
-      date: Date.now(),
-    };
+    let message = this.state.message
 
     this.props.onSubmit(message);
 
