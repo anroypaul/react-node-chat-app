@@ -7,7 +7,7 @@ import { Grid, Segment, Header } from "semantic-ui-react";
 class App extends Component {
   constructor() {
     super();
-    this.socket = io(`localhost:5000`);
+    this.socket = io(`/`);
 
     this.state = {
       currentScreen: "LoginScreen",
