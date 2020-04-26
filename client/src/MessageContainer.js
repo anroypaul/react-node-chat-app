@@ -18,9 +18,10 @@ class MessageContainer extends React.Component {
       messages: [
         ...this.state.messages,
         {
-          username: "Admin",
+          //username: "Admin",
           text: `${this.props.currentUsername} (you) connected!`,
           date: Date.now(),
+          isSystem: true
         },
       ],
     });
@@ -36,9 +37,10 @@ class MessageContainer extends React.Component {
         messages: [
           ...this.state.messages,
           {
-            username: "Admin",
+            //username: "Admin",
             text: `${data.username} connected!`,
             date: Date.now(),
+            isSystem: true
           },
         ],
         currentOnline: data.currentOnline,
@@ -50,9 +52,10 @@ class MessageContainer extends React.Component {
         messages: [
           ...this.state.messages,
           {
-            username: "Admin",
+            //username: "Admin",
             text: `${data.username} disconnected!`,
             date: Date.now(),
+            isSystem: true
           },
         ],
         currentOnline: data.currentOnline,
@@ -77,13 +80,13 @@ class MessageContainer extends React.Component {
   render() {
     return (
       <Comment.Group>
-        <Header as="h3" dividing>
-          Current Online: {this.state.currentOnline}
+        <Header size='tiny' textAlign='right' color="grey" dividing>
+          CURRENT ONLINE: {this.state.currentOnline}
         </Header>
         {this.state.messages.map((message, index) => (
           <MessageItem key={index} message={message} />
         ))}
-        <Divider />
+        <Divider/>
         <MessageForm
           currentUsername={this.props.currentUsername}
           onSubmit={this.onMessageFormSubmit}

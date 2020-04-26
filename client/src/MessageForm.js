@@ -26,6 +26,9 @@ class MessageForm extends React.Component {
   onSubmit(event) {
     event.preventDefault();
     let message = this.state.message
+    if (this.state.message.trim() === "") {
+      return;
+    }
 
     this.props.onSubmit(message);
 

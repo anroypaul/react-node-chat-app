@@ -52,14 +52,14 @@ class App extends Component {
 
   render() {
     return (
-      <Grid
+      <Grid as={Segment}
         textAlign="center"
         style={{ height: "100vh" }}
         verticalAlign="middle"
       >
         <Grid.Column style={{ maxWidth: 650 }}>
           <Header as="h2" color="blue" textAlign="center">
-            Chat App
+            CHAT APP
           </Header>
           {this.renderCurrentScreen()}
         </Grid.Column>

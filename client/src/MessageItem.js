@@ -1,6 +1,6 @@
 import React from "react";
 import moment from "moment";
-import { Comment } from "semantic-ui-react";
+import { Comment, Message } from "semantic-ui-react";
 
 const MessageItem = (props) => {
   return (
@@ -13,7 +13,9 @@ const MessageItem = (props) => {
         <Comment.Metadata>
           <span className="date">{moment(props.message.date).calendar()}</span>
         </Comment.Metadata>
-        <Comment.Text>{props.message.text}</Comment.Text>
+        <Comment.Text>
+          {props.message.isSystem ? <Message>{props.message.text}</Message> : props.message.text}
+          </Comment.Text>
       </Comment.Content>
     </Comment>
   );
